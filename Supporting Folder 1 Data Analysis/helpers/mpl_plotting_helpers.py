@@ -1253,3 +1253,98 @@ def dotplot(labelled_groups,
 #
 #
 ############################################################################################################
+#
+#         Exploiting matplotlib.axes.Axes.table()
+
+from matplotlib.transforms import Bbox
+
+def make_mpl_table(*lists,
+                   fig = None,
+                   ax = None, 
+                   colours = [], 
+                   columns = True,
+                   colLabels = [],
+                   rowLabels = [],
+                   colLabels_colours = [],
+                   rowLabels_colours = [],
+                   tableargs = {"loc" : (0,0),
+                                "edges" : "open"},
+                   fontfamily = "sans-serif",
+                   font = "Arial",
+                   fontsize = "14",
+                   fontweight = "bold"):
+    """
+    """
+    if ax == None and fig == None:
+        x = float(input("Please input the X component of figure size (float):\t" ))
+        y = float(input("Please input the Y component of figure size (float):\t" ))
+        fig, ax = plt.subplots(figsize = (x,y))
+    elif ax == None or fig == None:
+        assert False, "Both a figure and axes object should be passed in, or neither."
+    if columns:
+        lists = gh.transpose(*lists)
+    if colLabels != []:
+        assert len(colLabels) == len(lists[0]), "Not enough column labels provided"
+    else:
+        colLabels = ["" for _ in range(len(lists[0]))]
+    if rowLabels != []:
+        assert len(rowLabels) == len(lists), "Not enough row labels provided"
+    else:
+        rowLabels = ["" for _ in range(len(lists))]
+    if colLabels_colours != []:
+        assert len(colLabels_colours) == len(colLabels), "The number of colours provided for column labels\ndoes not match the number of labels"
+    else:
+        colLabel_colours = ["black" for _ in range(len(colLabels))]
+    if rowLabels_colours != []:
+        assert len(rowLabels_colours) == len(rowLabels), "The number of colours provided for row labels\ndoes not match the number of labels"
+    else:
+        rowLabel_colours = ["black" for _ in range(len(rowLabels))]
+    if colours != [] and columns:
+        colours = gh.transpose(*colours)
+        assert all([len(row) == len(lists[0]) for row in colours]), "Too few colours provided for each column"
+        assert len(colours) == len(lists), "Too few rows of colours provided"
+    elif colours != [] and not columns:
+        assert all([len(row) == len(lists[0]) for row in colours]), "Too few colours provided for each column"
+        assert len(colours) == len(lists), "Too few rows of colours provided"
+    else:
+        colours = [["black" for _ in range(len(lists[0])+1)] for i in range(len(lists)+1)]
+    tab = ax.table(lists, rowLabels = rowLabels, colLabels = colLabels, **tableargs)
+    r = fig.canvas.get_renderer()
+    cellwidths = [[0 for _ in range(len(lists[0])+1)] for i in range(len(lists)+1)]
+    cellheights = [[0 for _ in range(len(lists[0])+1)] for i in range(len(lists)+1)]
+    for cell in tab._cells:
+        text = tab._cells[cell].get_text()
+        text.set_fontfamily(fontfamily)
+        text.set_font(font)
+        text.set_fontweight(fontweight)
+        text.set_fontsize(fontsize)
+        text.set_ha("center")
+        coords = text.get_window_extent(renderer=r)
+        coords = Bbox(ax.transData.inverted().transform(coords))
+        width = coords.width
+        height = coords.height
+        cellwidths[cell[0]][cell[1]+1] = width
+        cellheights[cell[0]][cell[1]+1] = height
+    cellwidths = [max(col) for col in gh.transpose(*cellwidths)]
+    cellheights = [max(col) for col in cellheights]
+    for cell in tab._cells:
+        if cell[0] == 0:
+            text = tab._cells[cell].get_text()
+            text.set_color(colLabel_colours[cell[1]])
+            tab._cells[cell].set_width(cellwidths[cell[1]+1])
+            tab._cells[cell].set_height(cellheights[cell[0]])
+        elif cell[1] == -1:
+            text = tab._cells[cell].get_text()
+            text.set_color(rowLabel_colours[cell[0]-1])
+            tab._cells[cell].set_width(cellwidths[cell[1]+1])
+            tab._cells[cell].set_height(cellheights[cell[0]])
+        else:
+            text = tab._cells[cell].get_text()
+            text.set_color(colours[cell[0]-1][cell[1]])
+            tab._cells[cell].set_width(cellwidths[cell[1]+1])
+            tab._cells[cell].set_height(cellheights[cell[0]])
+    return fig, ax, tab
+
+#
+#
+############################################################################################################

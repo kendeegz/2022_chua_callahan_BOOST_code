@@ -54,7 +54,7 @@ import os
 # For managing system-level processes
 import sys
 #
-is not os.path.exists("database/phosphositeplus_ptm_data.txt") and not os.path.exists("database/Phosphorylation_site_dataset"):
+if not os.path.exists("database/phosphositeplus_ptm_data.txt") and not os.path.exists("database/Phosphorylation_site_dataset"):
     print("The PhosphoSitePlus PTM database was not found.")
     print("Please visit phosphosite.org and download the 'Phosphorylation_site_dataset.gz' file,")
     print("unzip the file, and place it in the database folder.")
