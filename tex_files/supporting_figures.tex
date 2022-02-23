@@ -1,6 +1,7 @@
 \documentclass[journal=jprobs,manuscript=article]{achemso}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
@@ -152,6 +153,9 @@
                                                                                                                                                     & ides from BOOST experiments (with and \\
                                                                                                                                        & without $\Phi$SDM)\\
 
+	\textbf{\hyperref[mouse_jurkat_keggtcr]{Supporting Figure} \ref{mouse_jurkat_keggtcr}:} &  Overlap between Mouse-BOOST and \\
+                                                                                                                                                               & Jurkat-BOOST experiments \\
+
     \end{tabular}
 \end{table}
 
@@ -162,32 +166,32 @@
 % Space for the Supplemental Tables
 
 \begin{table}[h!]
-	\caption{All unique peptides observed exclusively in the BOOST experiment with $\Phi$SDM disabled and reporter ions quantified in at least one experimental channel. Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathway} Annotations for each unique peptide.
+	\caption{All unique peptides observed exclusively in the BOOST experiment with $\Phi$SDM disabled and reporter ions quantified in at least one experimental channel. Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathways}\cite{martens2021wikipathways} Annotations for each unique peptide.
 }\label{boost_gained_peps}
 \end{table}
 
 \begin{table}[h!]
-	\caption{All unique peptides observed in both the BOOST experiment and the 1.0 mg Control experiment with $\Phi$SDM disabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathway} Annotations for each unique peptide.
+	\caption{All unique peptides observed in both the BOOST experiment and the 1.0 mg Control experiment with $\Phi$SDM disabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathways}\cite{martens2021wikipathways} Annotations for each unique peptide.
 }\label{nosdm_overlap_peps}
 \end{table}
 
 \begin{table}[h!]
-	\caption{All unique peptides observed exclusively in the 1.0 mg Control experiment with $\Phi$SDM disabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathway} Annotations for each unique peptide.
+	\caption{All unique peptides observed exclusively in the 1.0 mg Control experiment with $\Phi$SDM disabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values) and \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathways}\cite{martens2021wikipathways} Annotations for each unique peptide.
 }\label{control_only_peps}
 \end{table}
 
 \begin{table}[h!]
-	\caption{All unique peptides observed exclusively in the BOOST experiment with $\Phi$SDM enabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathway} Annotations for each unique peptide.
+	\caption{All unique peptides observed exclusively in the BOOST experiment with $\Phi$SDM enabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathways}\cite{martens2021wikipathways} Annotations for each unique peptide.
 }\label{boostsdm_gained_peps}
 \end{table}
 
 \begin{table}[h!]
-	\caption{All unique peptides observed in both the BOOST experiment and the 1.0 mg Control experiment with $\Phi$SDM enabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathway} Annotations for each unique peptide.
+	\caption{All unique peptides observed in both the BOOST experiment and the 1.0 mg Control experiment with $\Phi$SDM enabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values, BOOST factors) and  \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathways}\cite{martens2021wikipathways} Annotations for each unique peptide.
 }\label{sdm_overlap_peps}
 \end{table}
 
 \begin{table}[h!]
-	\caption{All unique peptides observed exclusively in the 1.0 mg Control experiment with $\Phi$SDM enabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as PhosphoSitePlus$^{\text{\textregistered}}$ site annotations, calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values) and \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathway} Annotations for each unique peptide.
+	\caption{All unique peptides observed exclusively in the 1.0 mg Control experiment with $\Phi$SDM enabled and reporter ions quantified in at least one experimental channel.  Included are MaxQuant outputs such as the gene name(s), protein name(s), modified sequence, modified sequence with phosphorylation site localization probabilities, sequence windows, and corrected TMT reporter ion intensities, as well as PhosphoSitePlus$^{\text{\textregistered}}$ site annotations, calculations used in the manuscript (mean intensity values, standard deviations, CV percentages, $p$-values, $q$-values) and \href{https://www.wikipathways.org/index.php/WikiPathways}{WikiPathways}\cite{martens2021wikipathways} Annotations for each unique peptide.
 }\label{controlsdm_only_peps}
 \end{table}
 
@@ -310,6 +314,18 @@
 \includegraphics[width=165mm]{figures/supplements/boost_factor_cdfs.pdf}
 \caption{Enabling $\Phi$SDM decreases quantitation depth, particularly in low abundance samples. Cumulative distribution of BOOST factors for unique pTyr peptides identified in the pervanadate BOOST experiments with $\Phi$SDM disabled or with $\Phi$SDM enabled for pTyr peptides with a statistically significant ratio ($q<0.05$) or for all calculable ratios. For each cumulative distribution, the range of BOOST factors are split into $50$ bins of equal size on a $\log_{10}$ scale. }\label{boost_factor_cdfs}
 \end{figure}
+
+\clearpage
+
+\begin{figure}[t!]
+\centering
+\includegraphics[width=165mm]{figures/supplements/mouse_jurkat_keggtcr.pdf}
+\caption{Comparison of pTyr sites identified using BOOST in primary T cells from mice and pTyr sites identified using BOOST in Jukat T cells. Our mouse data acquired without the $\Phi$SDM enabled were compared to the data from \citeauthor{chua2020tandem} colected in Jurkat T cells and acquired on an Orbitrap Fusion Lumos Tribrid mass spectrometer without the $\Phi$SDM enabled. Flanking sequences (phosphorylation site $\pm7$ amino acids) and phosphorylation sites for each protein in the Kyoto Encyclopedia of Genes and Genomes T cell receptor signaling pathway were manuall curated from \href{https://www.phosphosite.org}{PhosphoSitePlus$^{\text{\textregistered}}$}\cite{hornbeck2015phosphositeplus} for humans and mice. Flanking sequences for each peptide in the Mouse-BOOST and Jurkat-BOOST datasets were compared with the manually curated KEGG TCR/PhosphoSitePlus flanking sequences and filtered for unique sites. Gene names are colored \textbf{{\color{Purple}purple}}. Phosphotyrosine sites identified in mice are colored \textbf{{\color{Red}red}}. Phosphotyrosine sites identified in Jurkat T cells are colored \textbf{{\color{ForestGreen}green}}. Sites that were not identified either mice or Jurkat T cells are colored \textbf{{\color{Gray}grey}}. }\label{mouse_jurkat_keggtcr}
+\end{figure}
+
+\clearpage
+
+\bibliography{citations.bib}
 
 \end{document}
 
