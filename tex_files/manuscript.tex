@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
+%\usepackage[dvipsnames]{xcolor}
 %\usepackage{authblk}
 
 %\usepackage{changepage}   % For adjusting image width
@@ -39,7 +40,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Mouse primary T cell phosphoyrosine proteomics enabled by BOOST}
-\author{Xien Yu Chua$^{1}$, Kenneth P. Callahan$^{2}$, Alijah A. Griffith$^{2}$, Tobias Hildebrandt$^{2}$, Guoping Fu$^{3}$, Mengzhou Hu$^{1}$, Renren Wen$^{3}$, Arthur R. Salomon$^{2,*}$
+\author{Xien Yu Chua$^{1,\P}$, Kenneth P. Callahan$^{2,\P}$, Alijah A. Griffith$^{2}$, Tobias Hildebrandt$^{1}$, Guoping Fu$^{3}$, Mengzhou Hu$^{1}$, Renren Wen$^{3}$, Arthur R. Salomon$^{2,*}$
 \\
 \singlespacing
 \textit{\small{$1$ Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}}
@@ -48,25 +49,32 @@
 \\
 \textit{\small{$3$ Blood Research Institute, Blood Center of Wisconsin, Milwaukee, WI, 53226}}
 \\
+\textit{\small{$\P$ Contributed equally to this work}}
+\\
 \textit{\small{$*$} Corresponding Author}\tiny}
 \email{art@drsalomon.com}
-%\\
-%\textit{\small{$\P$ Contributed equally to this work}}\tiny}
+%
+%
+% In our previous manuscript submission using LaTeX (https://doi.org/10.1021/acs.jproteome.1c00735),
 % The editors of JPR wanted the author affiliations to be numbered, rather than
 % the symbols automatically provided by the achemso package. 
 %
 % To get back to the original code, just comment out the lines above and uncomment the
 % lines below.
 
-%\author{Alijah A. Griffith}
+%\author{Xien Yu Chua}
 %\altaffiliation{Contributed equally to this work}
+%\affiliation{Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}
 %\author{Kenneth P. Callahan}
 %\altaffiliation{Contributed equally to this work}
-%\author{Nathan Gordo King}
-%\affiliation[Brown University]{Department of Molecular Biology, Cell Biology \& Biochemistry, Brown University}
-%\author{Qian Xiao}
-%\author{Xiaolei Su} 
-%\affiliation[Yale University]{Department of Cell Biology, Yale School of Medicine, Yale University}
+%\author{Alijah A. Griffith}
+%\affiliation{Department of Molecular Biology, Cell Biology \& Biochemistry, Brown University, Providence, RI, 02912}
+%\author{Tobias Hildebrandt}
+%\affiliation{Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}
+%\author{Guoping Fu}
+%\affiliation{Blood Research Institute, Blood Center of Wisconsin, Milwaukee, WI, 53226}
+%\author{Mengzhou Hu} 
+%\affiliation{Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}
 %\author{Arthur R. Salomon}
 %\email{art@drsalomon.com}
 %\affiliation[Brown University]{Department of Molecular Biology, Cell Biology \& Biochemistry, Brown University}
@@ -237,15 +245,19 @@ In our paper describing the BOOST method, we determined the magnitude of quantit
 
 \subsection{BOOST Reveals pTyr Sites Critical for T cell Receptor Signaling in Primary T cells}
 
+\begin{figure}
+\centering
+\includegraphics[width=170mm]{figures/main_figs/biologically_interesting.pdf}
+\caption{BOOST pTyr proteomics reveals a comparable number of unique TCR-related pTyr sites in primary T cells from mice and Jurkat T cells. Unique pTyr sites identified in our BOOST experiment with the $\Phi$SDM disabled are colored in red. Unique pTyr sites identified by \citeauthor{chua2020tandem} \citeyear{chua2020tandem} in the Jurkat T cell model system for studying TCR signaling are colored in green. Inset shows the overlap between unique pTyr sites in our BOOST experiment and the BOOST experiment performed by \citeauthor{chua2020tandem} \citeyear{chua2020tandem}. Special characters next to site numbers indicate the presence of PSMs that arise from multiple proteins:  $^{\textbf{\$}}$Fyn/Yes1 $|$ $^{\textbf{*}}$Fyn/Yes1/Src/Lck $|$ $^{\textbf{!}}$Fyn/Yes1/Src $|$ $^{\textbf{\#}}$Jnk1/Jnk3.  }\label{biologically_interesting}
+\end{figure}
 
+To show the efficacy of BOOST pTyr proteomics in primary T cells we used $\alpha$-CD3 antibodies to stimulate TCR signaling (Figure \ref{experimental_design}). Therefore, we expected to observe many unique pTyr sites on TCR signaling proteins. In accordance with our expectations, we observed a total of $113$ unique pTyr sites on proteins in the Kyoto Encyclopedia of Genes and Genomes (KEGG) T cell receptor signaling pathway (Figure \ref{biologically_interesting}, Supporting Figure $12$). To determine the profiling range of unique pTyr site sequencing in primary T cells using BOOST, we compared our BOOST experiment with the $\Phi$SDM disabled to our previously published BOOST experiment in Jurkat T cells\cite{chua2020tandem}. Our Jurkat BOOST experiment was acquired using an Orbitrap Fusion Lumos Tribrid mass spectrometer without the $\Phi$SDM and had a similar BOOST-gained yield to our BOOST experiment\cite{yu2020benchmarking,chua2020tandem}, and is therefore suitable for comparison with our BOOST data. We observed $60$ pTyr sites in both mouse and Jurkat BOOST experiments (Figure \ref{biologically_interesting} inset), with the majority of these sites on ITAMs (TCR$\zeta$, CD3$\delta$/$\epsilon$/$\gamma$; $12$), the tyrosine kinase Zap70 ($10$), and the canonical activation sites on mitogen activated protein kinases (Erk1/2, p38$\alpha$/$\beta$, Jnk$1/2/3$; $7$). We found $53$ unique pTyr sites exclusive to BOOST in primary T cells from mice, compared to $32$ unique pTyr sites exclusive to BOOST in Jurkat T cells (Figure \ref{biologically_interesting} inset). Notably, using the BOOST method in primary T cells from mice uncovered $8$ pTyr sites on CD45, a phosphatase critical for the activation of Lck\cite{sieh1993cd45}, and $4$ pTyr sites on Tec, a non receptor tyrosine kinase with overlapping function with Itk in TCR signaling\cite{yang1999role,aoki2004mutual}. Of the $4$ unique pTyr sites observed on Tec, the activation site (Y519) was quantified in all three replicates in the $1.0$, $0.3$, and $0.1$ mg samples of the BOOST experiment, whereas it was quantified in some but not all replicates of all conditions of the $1.0$ mg Control experiment. Similar results were found for SHP-1$^{\text{Y536}}$, Itk$^{\text{Y512}}$, Zap70$^{\text{Y290}}$, and Zap70$^{\text{Y492}}$ from our BOOST experiment in primary T cells from mice (Supporting Table $2$). These results suggest that using BOOST in primary T cells from mice increases pTyr profiling depth similarly to what we observed previously using Jurkat T cells\cite{chua2020tandem,chua2021ovalbumin}.
 
 \section{Discussion}
 
 To improve our understanding of the critical tyrosine phosphorylation events involved in TCR signaling and other cellular processes, accurate methods to perform deep profiling of the pTyr proteome are required. Although the accuracy of LC-MS/MS techniques are desirable for pTyr proteomics, the low abundance of tyrosine phosphorylation events in the proteome hinder the frequently used global phosphoenrichment methods like TiO$_{2}$ or IMAC\cite{navarro2011phosphoproteomic,prado2021synergistic,thingholm2006highly,thingholm2016use,thingholm2016phosphopeptide}. Although recent developments in pTyr-specific enrichment techniques like p-Tyr-1000 and the superbinder SH2 method have improved pTyr proteomics\cite{kaneko2012superbinder,bian2016ultra,dong2017sensitive,tong2017protein,yao2018sh2,yao2019one,chua2020tandem}, the issue of low pTyr abundance is apparent when using samples that are difficult or expensive to collect, such as primary cells from humans or mice\cite{salter2021comparative,ramello2019immunoproteomic,locard2020lymphoatlas}. Increasing quantitative yield in low abundance samples has been acheived in multiplexed TMT experiments using a carrier proteome sample\cite{petelski2021multiplexed,stopfer2021quantitative,cheung2021defining}, and we developed the BOOST method using a pervanadate treated sample to increase quantitative yield of pTyr peptides\cite{chua2020tandem,chua2021ovalbumin}.
 
- Here, we demonstrate the first use of the BOOST method in primary T cells from mice, defining the accuracy, precision, and profiling depth of the mouse T cell pTyr proteome in low abundance samples. Our multiplexed TMT experiments were designed to minimize reporter ion interference from the pervanadate channel by including a ``Blank" (127C) channel where maximal reporter ion interference has been observed previously\cite{chua2021ovalbumin,stopfer2021quantitative}. Using BOOST, we were able to quantify more than $2{,}000$, $900$, and $300$ unqiue pTyr peptides in $1.0$ mg, $0.3$ mg, and $0.1$ mg protein samples, respectively (Figure \ref{depth_nans}D), while maintaining accuracy and precision (Figure \ref{accuracy_and_precision}, Supporting Figure $4$). Using BOOST allowed for $3{,}006$ BOOST-gained pTyr peptides to be quantified with $2{,}939$ pTyr peptides that were low abundance in the samples (Figure \ref{boost_factor}C). Together, our data suggest that including a pervanadate BOOST channel increases quantitative depth of low abundance peptides in higher abundance samples and overall quantitation in low abundance samples without large comprimises to accuracy or precision.
-
-\textbf{Something about the sites we see in tobias' stuff}
+ Here, we demonstrate the first use of the BOOST method in primary T cells from mice, defining the accuracy, precision, and profiling depth of the mouse T cell pTyr proteome in low abundance samples. Our multiplexed TMT experiments were designed to minimize reporter ion interference from the pervanadate channel by including a ``Blank" (127C) channel where maximal reporter ion interference has been observed previously\cite{chua2021ovalbumin,stopfer2021quantitative}. Using BOOST, we were able to quantify more than $2{,}000$, $900$, and $300$ unqiue pTyr peptides in $1.0$ mg, $0.3$ mg, and $0.1$ mg protein samples, respectively (Figure \ref{depth_nans}D), while maintaining accuracy and precision (Figure \ref{accuracy_and_precision}, Supporting Figure $4$). Using BOOST allowed for $3{,}006$ BOOST-gained pTyr peptides to be quantified with $2{,}939$ pTyr peptides that were low abundance in the samples (Figure \ref{boost_factor}C). This included $113$ unique pTyr sites on proteins involved in the T cell receptor signaling pathway, with $53$ of these sites being uniquely identified in mice when compared to our the pTyr sites we originally identified in Jurkat T cells (Figure \ref{biologically_interesting}, Supporting Figure $12$)\cite{chua2020tandem}. Of the TCR signaling proteins indentified using BOOST, many of the unique pTyr sites were found in all replicates of the $0.3$ and/or $0.1$ mg samples in the BOOST experiment and not in the $1.0$ mg Control experiment. Together, our data suggest that including a pervanadate BOOST channel increases quantitative depth of low abundance peptides in higher abundance samples and overall quantitation in low abundance samples without large comprimises to accuracy or precision.
 
 We also examined the influence of the acquisition parameter $\Phi$SDM, a computational method that increases acquisition rate of FT-MS by efficient and noise tolerant deconvolution of FT spectra\cite{grinfeld2017phase}, on our BOOST and $1.0$ mg Control samples. Although previous research has shown that using the $\Phi$SDM on long gradients or scarce samples may reduce the efficiency of the algorithm due to low ion currents\cite{grinfeld2017phase,yu2020benchmarking,kelstrup2018limits}, the influence of the $\Phi$SDM on TMT mixes with carrier proteome channels has yet to be evaluated. Our data are in agreement with previous literature suggesting that enabling the $\Phi$SDM degrades low abundance samples. We observed a decrease of about $75$ to $100$ unique pTyr peptides across our $1.0$ mg Control samples with the $\Phi$SDM enabled, with the largest loss in the $0.1$ mg R1 sample ($221$ to $104$ unique pTyr peptides; Figure \ref{depth_nans}A,B). Surprisingly, enabling the $\Phi$SDM degraded the quality of data from BOOST experiments. We observed a large reduction of unique pTyr peptide yield in experimental channels, with the largest difference being $1.0$ mg R1 dropping from $2{,}931$ unique pTyr peptides to $784$ unique pTyr peptides with the $\Phi$SDM enabled (Figure \ref{depth_nans}C,D). We also observed a reduction in accuracy (Figure \ref{accuracy_and_precision}B), precision (Figure \ref{accuracy_and_precision}C), and replicate reproducibility (Supporting Figures $4$, $5$) with the $\Phi$SDM enabled. Our study indicates that disabling the $\Phi$SDM, or ``Turbo-TMT" on the method editor on Orbitrap instruments, subtstantially improves the quantitation depth of low abundance posttranslational modification samples, especially when a BOOST channel is present.
 
@@ -254,7 +266,7 @@ With increased interest in using proteomics to study rare or specific posttransl
 
 \section{Conclusion}
 
-Our study defines the accuracy, precision, and profiling depth of multiplexed TMT experiments using a pervandate BOOST channel to increase quantitative yield of pTyr peptides in stimulated primary T cells from mice. We found that including the BOOST channel increases the quantitative yield of unique pTyr peptides without jeoprodizing accuracy, precision, or replicate reproducibility in low abundance samples. The majority of the unique pTyr peptides observed in the BOOST channel and at least one experimental channel were scarce in the samples, suggesting that BOOST increases identification of rare pTyr peptides. Surprisingly, we found that enabling the $\Phi$SDM degrades the quality of data in BOOST experiments, almost halving the unique pTyr peptide yield and reducing accuracy, precision, and replicate reproducibility in low abundance samples. \textbf{ Something about the sites we see in tobias' stuff.} Together, our study shows that multiplexed TMT experiments using a pervanadate BOOST channel increase quatitative yield of meaningful unique pTyr peptides in primary T cells from mice and that the $\Phi$SDM should not be used during BOOST experiments.
+Our study defines the accuracy, precision, and profiling depth of multiplexed TMT experiments using a pervandate BOOST channel to increase quantitative yield of pTyr peptides in stimulated primary T cells from mice. We found that including the BOOST channel increases the quantitative yield of unique pTyr peptides without jeoprodizing accuracy, precision, or replicate reproducibility in low abundance samples. The majority of the unique pTyr peptides observed in the BOOST channel and at least one experimental channel were scarce in the samples, suggesting that BOOST increases identification of rare pTyr peptides. Surprisingly, we found that enabling the $\Phi$SDM degrades the quality of data in BOOST experiments, almost halving the unique pTyr peptide yield and reducing accuracy, precision, and replicate reproducibility in low abundance samples. Using BOOST, we were able to quantify many unique pTyr sites on proteins involved in TCR signaling in experimental channels. Together, our study shows that multiplexed TMT experiments using a pervanadate BOOST channel increase quatitative yield of meaningful unique pTyr peptides in primary T cells from mice and that the $\Phi$SDM should not be used during BOOST experiments.
 
 \section{Supporting Information}
 

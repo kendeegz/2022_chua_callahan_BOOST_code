@@ -1,6 +1,7 @@
 \documentclass[journal=jprobs,manuscript=article]{achemso}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{bm}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
@@ -22,9 +23,10 @@
 \fancyfoot[C]{S-\thepage}
 \fancyhead[R]{\textit{\small{Mouse primary T cell phosphoyrosine proteomics enabled by BOOST}}}
 %\fancyhead[L]{\small{Chua \& Callahan \textit{et al.}}}
-\fancyhead[L]{\small{Chua \textit{et al.}}}
+\fancyhead[L]{\small{Chua \& Callahan \textit{et al.}}}
 \renewcommand{\figurename}{Supporting Figure}   % Renaming the Figure float name to "Supplementary Figure"
 \renewcommand{\tablename}{Supporting Table}     % Renaming the Table float name to "Supplementary Table"
+\newcommand\XOR{\mathbin{\char`\^}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Originally, this was used to create a \beginsupplement command that would
@@ -38,7 +40,8 @@
 %     }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{Supporting Information:  \\Mouse primary T cell phosphoyrosine proteomics enabled by BOOST}
-\author{Xien Yu Chua$^{1}$, Kenneth P. Callahan$^{2}$, Alijah A. Griffith$^{2}$, Tobias Hildebrandt$^{2}$, Guoping Fu$^{3}$, Mengzhou Hu$^{1}$, Renren Wen$^{3}$, Arthur R. Salomon$^{2,*}$
+
+\author{Xien Yu Chua$^{1,\P}$, Kenneth P. Callahan$^{2,\P}$, Alijah A. Griffith$^{2}$, Tobias Hildebrandt$^{1}$, Guoping Fu$^{3}$, Mengzhou Hu$^{1}$, Renren Wen$^{3}$, Arthur R. Salomon$^{2,*}$
 \\
 \singlespacing
 \textit{\small{$1$ Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}}
@@ -47,20 +50,34 @@
 \\
 \textit{\small{$3$ Blood Research Institute, Blood Center of Wisconsin, Milwaukee, WI, 53226}}
 \\
+\textit{\small{$\P$ Contributed equally to this work}}
+\\
 \textit{\small{$*$} Corresponding Author}\tiny}
 \email{art@drsalomon.com}
 %\\
 %\textit{\small{$\P$ Contributed equally to this work}}\tiny}
+%
+%
+% In our previous manuscript submission using LaTeX (https://doi.org/10.1021/acs.jproteome.1c00735),
+% The editors of JPR wanted the author affiliations to be numbered, rather than
+% the symbols automatically provided by the achemso package. 
+%
+% To get back to the original code, just comment out the lines above and uncomment the
+% lines below.
 
-%\author{Alijah A. Griffith}
+%\author{Xien Yu Chua}
 %\altaffiliation{Contributed equally to this work}
+%\affiliation{Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}
 %\author{Kenneth P. Callahan}
 %\altaffiliation{Contributed equally to this work}
-%\author{Nathan Gordo King}
-%\affiliation[Brown University]{Department of Molecular Biology, Cell Biology \& Biochemistry, Brown University}
-%\author{Qian Xiao}
-%\author{Xiaolei Su} 
-%\affiliation[Yale University]{Department of Cell Biology, Yale School of Medicine, Yale University}
+%\author{Alijah A. Griffith}
+%\affiliation{Department of Molecular Biology, Cell Biology \& Biochemistry, Brown University, Providence, RI, 02912}
+%\author{Tobias Hildebrandt}
+%\affiliation{Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}
+%\author{Guoping Fu}
+%\affiliation{Blood Research Institute, Blood Center of Wisconsin, Milwaukee, WI, 53226}
+%\author{Mengzhou Hu} 
+%\affiliation{Department of Molecular Pharmacology, Physiology \& Biotechnology, Brown University, Providence, RI, 02912}
 %\author{Arthur R. Salomon}
 %\email{art@drsalomon.com}
 %\affiliation[Brown University]{Department of Molecular Biology, Cell Biology \& Biochemistry, Brown University}
@@ -111,9 +128,9 @@
 	\textbf{\hyperref[controlsdm_only_peps]{Supporting Table} \ref{controlsdm_only_peps}:} & (.XLSX) All unique peptides observed in the $1.0$ mg\\
                                                                                                                                                   & Control experiment with $\Phi$SDM \\
 
-	\textbf{Supporting Folder $2$} & (.ZIP) All Python3 code used for data analysis \\
+	\textbf{Supporting Folder 1} & (.ZIP) All tables output from MaxQuant \\
 
-	\textbf{Supporting Folder $1$} & (.ZIP) All tables output from MaxQuant \\
+	\textbf{Supporting Folder 2} & (.ZIP) All Python3 code used for data analysis \\
 
         \textbf{\hyperref[locprob]{Supporting Figure} \ref{locprob}:} & Histogram of all PSMs containing a phosphory- \\
                                                                                                                 & lated amino acid in all conditions binned by \\
@@ -320,7 +337,7 @@
 \begin{figure}[t!]
 \centering
 \includegraphics[width=165mm]{figures/supplements/mouse_jurkat_keggtcr.pdf}
-\caption{Comparison of pTyr sites identified using BOOST in primary T cells from mice and pTyr sites identified using BOOST in Jukat T cells. Our mouse data acquired without the $\Phi$SDM enabled were compared to the data from \citeauthor{chua2020tandem} colected in Jurkat T cells and acquired on an Orbitrap Fusion Lumos Tribrid mass spectrometer without the $\Phi$SDM enabled. Flanking sequences (phosphorylation site $\pm7$ amino acids) and phosphorylation sites for each protein in the Kyoto Encyclopedia of Genes and Genomes T cell receptor signaling pathway were manuall curated from \href{https://www.phosphosite.org}{PhosphoSitePlus$^{\text{\textregistered}}$}\cite{hornbeck2015phosphositeplus} for humans and mice. Flanking sequences for each peptide in the Mouse-BOOST and Jurkat-BOOST datasets were compared with the manually curated KEGG TCR/PhosphoSitePlus flanking sequences and filtered for unique sites. Gene names are colored \textbf{{\color{Purple}purple}}. Phosphotyrosine sites identified in mice are colored \textbf{{\color{Red}red}}. Phosphotyrosine sites identified in Jurkat T cells are colored \textbf{{\color{ForestGreen}green}}. Sites that were not identified either mice or Jurkat T cells are colored \textbf{{\color{Gray}grey}}. }\label{mouse_jurkat_keggtcr}
+\caption{Comparison of pTyr sites identified using BOOST in primary T cells from mice and pTyr sites identified using BOOST in Jukat T cells. Flanking sequences (phosphorylation site $\pm7$ amino acids) and phosphorylation sites for each protein in the Kyoto Encyclopedia of Genes and Genomes T cell receptor signaling pathway were manually curated from \href{https://www.phosphosite.org}{PhosphoSitePlus$^{\text{\textregistered}}$}\cite{hornbeck2015phosphositeplus} for humans and mice. Flanking sequences for each peptide in the Mouse-BOOST and Jurkat-BOOST datasets were compared with the manually curated KEGG TCR/PhosphoSitePlus flanking sequences and filtered for unique sites. Gene names are colored \textbf{{\color{Purple}purple}}. Phosphotyrosine sites identified in mice are colored \textbf{{\color{Red}red}}. Phosphotyrosine sites identified in Jurkat T cells are colored \textbf{{\color{ForestGreen}green}}. Sites that were not identified either mice or Jurkat T cells are colored \textbf{{\color{Gray}grey}}. PSMs that can be assigned to multiple proteins: $\bm{\XOR}$Cbl-B;Cbl $|$ $^{\textbf{\%}}$CDC42/RHOA $|$ $^{\textbf{\$}}$Fyn/Yes1 $|$ $^{\textbf{*}}$Fyn/Yes1/Src/Lck $|$ $^{\textbf{!}}$Fyn/Yes1/Src $|$ $^{\textbf{\&}}$GSK3$\beta$/GSK3$\alpha$ $|$ $^{\textbf{\#}}$Jnk1/Jnk3 $|$ $^{\textbf{+}}$PAK1/PAK2. }\label{mouse_jurkat_keggtcr}
 \end{figure}
 
 \clearpage

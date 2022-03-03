@@ -114,6 +114,63 @@ keep_boost_cols = {"Gene names" : "Gene names",
                "id" : "evidence.txt ID",
                "Phospho (STY) site IDs" : "Phospho (STY)Sites.txt ID"}
 
+kegg_tcr_g_to_p = {"AKT2" : "Akt2",
+                     "CARD11" : "CARD11",
+                     "CBLB" : "Cbl-b",
+                     "CD247" : r"TCR$\zeta$",
+                     "CD28" : "CD28",
+                     "CD3D" : r"CD3$\delta$",
+                     "CD3E" : r"CD3$\epsilon$",
+                     "CD3G" : r"CD3$\gamma$",
+                     "CDC42" : "CDC42",
+                     "CDK4" : "CDK4",
+                     "CTLA4" : "CTLA-4",
+                     "DLG1" : "DLG1",
+                     "FYN" : "Fyn",
+                     "GRAP2" : "GADS",
+                     "GRB2" : "Grb2",
+                     "GSK3B" : r"GSK3$\beta$",
+                     "ITK" : "Itk",
+                     "LAT" : "LAT",
+                     "LCK" : "Lck",
+                     "LCP2" : "SLP76",
+                     "MAP3K7" : "TAK1",
+                     "MAPK1" : "Erk2",
+                     "MAPK3" : "Erk1",
+                     "MAPK8" : "Jnk1",
+                     "MAPK9" : "Jnk2",
+                     "MAPK10" : "Jnk3",
+                     "MAPK11" : r"p38$\beta$",
+                     "MAPK12" : r"p38$\gamma$",
+                     "MAPK14" : r"p38$\alpha$",
+                     "NCK1" : "NCK1",
+                     "NCK2" : "NCK2",
+                     "NFATC2" : "NFAT1",
+                     "NFATC3" : "NFAT4",
+                     "NFKB1" : r"NF$\kappa$B-p105",
+                     "PAK1" : "PAK1",
+                     "PAK2" : "PAK2",
+                     "PAK6" : "PAK6",
+                     "PDCD1" : "PD-1",
+                     "PIK3CA" : r"p110$\alpha$",
+                     "PIK3CD" : r"p110$\delta$",
+                     "PIK3R1" : r"p85$\alpha$", 
+                     "PIK3R2" : r"p85$\beta$",
+                     "PIK3R3" : r"p55$\gamma$",
+                     "PLCG1" : r"PLC$\gamma$1",
+                     "PRKCQ" : r"PKC$\theta$",
+                     "PTPN6" : "SHP-1",
+                     "PTPRC" : "CD45",
+                     "RHOA" : "RHOA",
+                     "TEC" : "Tec",
+                     "VAV1" : "Vav1",
+                     "VAV2" : "Vav2",
+                     "VAV3" : "Vav3",
+                     "ZAP70" : "Zap70"
+                     }
+
+kegg_tcr_p_to_g = {value : key for key, value in kegg_tcr_g_to_p.items()}
+
 heads = ["gene", "h site", "h flank", "m site", "m flank"]
 
 venn_colours = ["red","green"]
@@ -346,11 +403,14 @@ def main():
     plt.show()
     print("\tDone\n")
     print("STAGE 3: Writing the Unique Site Tables")
-    heads = ["gene", "h site", "h flank", "m site", "m flank"]
-    print("\tAggregating Comparison data")
+    heads = ["Protein", "h site", "h flank", "m site", "m flank"]
     comp_with_heads = [heads] + sorted(compared[0] + compared[1] + compared[2], key=lambda x: (x[0],int(x[1][1:])))
     comp_no_heads = comp_with_heads[1:]
-    print("\tBinning data into 29 groups")
+    compared_prot = [[[kegg_tcr_g_to_p[row[0]]] + row[1:] for row in comp] for comp in compared]
+    print("\tAggregating Comparison data")
+    comp_no_heads = [[kegg_tcr_g_to_p[row[0]]] + row[1:] for row in comp_no_heads]
+    comp_no_heads = sorted(comp_no_heads, key = lambda x: x[0].lower())
+    print("\tBinning data into 37 groups")
     cols = [comp_no_heads[i*37:(i+1)*37] for i in range(4)]
     for i in range(3):
         cols[-1].append(["","","","",""])
@@ -365,7 +425,8 @@ def main():
     for i in range(4):
         newcols[i*3] = replace_repeats(newcols[i*3])
     print("\tAssigning colours to each site and gene")
-    ncolours = make_site_colours(comp_no_heads, compared[0],compared[1],compared[2], gene = True)
+    ncolours = make_site_colours(comp_no_heads, compared_prot[0],compared_prot[1],compared_prot[2], gene = True)
+    print(len(ncolours))
     colours = [ncolours[i*37:(i+1)*37] for i in range(4)]
     for i in range(3):
         colours[-1].append(["grey","grey","grey"])
@@ -378,7 +439,7 @@ def main():
     newcolours = gh.transpose(*newcolours)
     print("\tMaking the table")
     fig1,ax1,tab = mph.make_mpl_table(*newcols,colours=newcolours,
-                                       colLabels = ["Gene", "Mouse", "Human","Gene", "Mouse", "Human","Gene", "Mouse", "Human","Gene", "Mouse", "Human"])#,"Gene", "Mouse", "Human"])#,"Gene", "Mouse", "Human","Gene", "Mouse", "Human"])
+                                       colLabels = ["Protein", "Mouse", "Human","Protein", "Mouse", "Human","Protein", "Mouse", "Human","Protein", "Mouse", "Human"])#,"Gene", "Mouse", "Human"])#,"Gene", "Mouse", "Human","Gene", "Mouse", "Human"])
     ax1.spines["top"].set_visible(False)
     ax1.spines["bottom"].set_visible(False)
     ax1.spines["left"].set_visible(False)
