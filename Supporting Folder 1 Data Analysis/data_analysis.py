@@ -281,7 +281,8 @@ def scatter_gausskde(d1,d2, ax, scatterargs = {"s" : 20,
                     llsr = True,
                     update_ticks = True,
                     xlim = [0,25],
-                    ylim = [0,25]):
+                    ylim = [0,25],
+                    colour = None):
     if llsr and xlim != None and ylim != None:
         data1, data2 = remove_nanpairs(d1,d2)
         a, b, r2= sh.least_squares_fit(data1, data2)
@@ -298,10 +299,14 @@ def scatter_gausskde(d1,d2, ax, scatterargs = {"s" : 20,
         ys = [a+b*xs[0], a+b*xs[1]]
         ax.plot(xs, ys, color = "black", linestyle = ":",
                 label = f"$y={a:.2f}+{b:.2f}x$\n$r^2 = {r2:.3f}$")
-    xy=np.vstack(remove_nanpairs(d1,d2))
-    z = gaussian_kde(xy)(xy)
-    ax.scatter(*remove_nanpairs(d1,d2), c=z, label = f"$n={len(data1)}$",
-               **scatterargs)
+    if colour == None:
+        xy=np.vstack(remove_nanpairs(d1,d2))
+        z = gaussian_kde(xy)(xy)
+        ax.scatter(*remove_nanpairs(d1,d2), c=z, label = f"$n={len(data1)}$",
+                **scatterargs)
+    else:
+        ax.scatter(*remove_nanpairs(d1,d2), c=colour, label = f"$n={len(data1)}$",
+                **scatterargs)
     if xlim != None:
         ax.set_xlim(*xlim)
     if ylim != None:
@@ -759,11 +764,11 @@ def main():
     print(f"\t{len(ev_clean)-1} PSMs remaining\n")
 
     print(f"\tAnnotating the rows using WikiPathways Human Database\n")
-    ev_clean = wikipath_annotation("database/wikipathways-20220110-gmt-Homo_sapiens.gmt",
+    ev_clean = wikipath_annotation("database/wikipathways-20220410-gmt-Homo_sapiens.gmt",
                                    ev_clean, gene_col = ev_clean[0].index("Gene names"))
     print("\tDone\n")
     print(f"\tAnnotating the rows using WikiPathways Mouse Database")
-    ev_clean = wikipath_annotation("database/wikipathways-20220110-gmt-Mus_musculus.gmt",
+    ev_clean = wikipath_annotation("database/wikipathways-20220410-gmt-Mus_musculus.gmt",
                                    ev_clean, gene_col = ev_clean[0].index("Gene names"))
     print("\tDone\n")
     print("\tGrabbing the columns relevant for data analysis\n")
@@ -1064,51 +1069,62 @@ def main():
     b_counts = [b_101_qcount, b_103_qcount, b_31_qcount]
 
     qr_data = [cs_rq, c_rq, bs_rq, b_rq]
+    # Grab the data for the ratio suppression graph
+    ratios = gh.transpose(*[[item[0] for item in group] for group in qr_data])
+    without_filt = gh.transpose(*[[cs_101_r, cs_103_r, cs_31_r],
+                [c_101_r, c_103_r, c_31_r],
+               [bs_101_r, bs_103_r, bs_31_r],
+               [b_101_r, b_103_r, b_31_r]])
+    without_filt = [[[d for d in col if d == d] for col in group] for group in without_filt]
+    loggedmean = [ratios, without_filt]
+    ratiomeds = [[[10**sh.median(col) for col in group] for group in ratios],
+             [[10**sh.median(col) for col in group] for group in without_filt]]
+    #
     qcounts = [cs_counts, c_counts, bs_counts, b_counts]
     
     print("\tCounting the number of unique pTyr peptides with quantified reporters")
     print("\t\tControl$+\Phi$SDM")
-    cs_report_count = [sum([1 for j in range(len(experiments["Control$+\Phi$SDM"][1:])) if experiments["Control$+\Phi$SDM"][j][i] == experiments["Control$+\Phi$SDM"][j][i]])
+    cs_report_count = [sum([1 for j in range(1,len(experiments["Control$+\Phi$SDM"])) if experiments["Control$+\Phi$SDM"][j][i] == experiments["Control$+\Phi$SDM"][j][i]])
                        for i in range(11)]
     print("\t\tControl")
-    c_report_count = [sum([1 for j in range(len(experiments["Control"][1:])) if experiments["Control"][j][i] == experiments["Control"][j][i]])
+    c_report_count = [sum([1 for j in range(1,len(experiments["Control"])) if experiments["Control"][j][i] == experiments["Control"][j][i]])
                        for i in range(11)]
     print("\t\tBOOST$+\Phi$SDM")
-    bs_report_count = [sum([1 for j in range(len(experiments["BOOST$+\Phi$SDM"][1:])) if experiments["BOOST$+\Phi$SDM"][j][i] == experiments["BOOST$+\Phi$SDM"][j][i]])
+    bs_report_count = [sum([1 for j in range(1,len(experiments["BOOST$+\Phi$SDM"])) if experiments["BOOST$+\Phi$SDM"][j][i] == experiments["BOOST$+\Phi$SDM"][j][i]])
                        for i in range(11)]
     print("\t\tBOOST")
-    b_report_count = [sum([1 for j in range(len(experiments["BOOST"][1:])) if experiments["BOOST"][j][i] == experiments["BOOST"][j][i]])
+    b_report_count = [sum([1 for j in range(1,len(experiments["BOOST"])) if experiments["BOOST"][j][i] == experiments["BOOST"][j][i]])
                        for i in range(11)]
     report_counts = [[cs_report_count, c_report_count],[bs_report_count, b_report_count]]
     
     print("\tComputing the percentage of unique pTyr peptides with missing reporter intensities")
     print("\t\tControl$+\Phi$SDM")
-    cs_report_perc = [sum([1 for j in range(len(experiments["Control$+\Phi$SDM"][1:])) if experiments["Control$+\Phi$SDM"][j][i] != experiments["Control$+\Phi$SDM"][j][i]])/len(experiments["Control$+\Phi$SDM"][1:])*100
+    cs_report_perc = [sum([1 for j in range(1,len(experiments["Control$+\Phi$SDM"])) if experiments["Control$+\Phi$SDM"][j][i] != experiments["Control$+\Phi$SDM"][j][i]])/len(experiments["Control$+\Phi$SDM"][1:])*100
                        for i in range(11)]
     print("\t\tControl")
-    c_report_perc = [sum([1 for j in range(len(experiments["Control"][1:])) if experiments["Control"][j][i] != experiments["Control"][j][i]])/len(experiments["Control"][1:])*100 
+    c_report_perc = [sum([1 for j in range(1,len(experiments["Control"])) if experiments["Control"][j][i] != experiments["Control"][j][i]])/len(experiments["Control"][1:])*100 
                        for i in range(11)]
     print("\t\tBOOST$+\Phi$SDM")
-    bs_report_perc = [sum([1 for j in range(len(experiments["BOOST$+\Phi$SDM"][1:])) if experiments["BOOST$+\Phi$SDM"][j][i] != experiments["BOOST$+\Phi$SDM"][j][i]])/len(experiments["BOOST$+\Phi$SDM"][1:])*100
+    bs_report_perc = [sum([1 for j in range(1,len(experiments["BOOST$+\Phi$SDM"])) if experiments["BOOST$+\Phi$SDM"][j][i] != experiments["BOOST$+\Phi$SDM"][j][i]])/len(experiments["BOOST$+\Phi$SDM"][1:])*100
                        for i in range(11)]
     print("\t\tBOOST")
-    b_report_perc = [sum([1 for j in range(len(experiments["BOOST"][1:])) if experiments["BOOST"][j][i] != experiments["BOOST"][j][i]])/len(experiments["BOOST"][1:])*100
+    b_report_perc = [sum([1 for j in range(1,len(experiments["BOOST"])) if experiments["BOOST"][j][i] != experiments["BOOST"][j][i]])/len(experiments["BOOST"][1:])*100
                        for i in range(11)]
 
     report_percs = [[cs_report_perc, c_report_perc], [bs_report_perc, b_report_perc]]
     
     print("\tCounting the number of unique pTyr peptides with missing reporter intensities")
     print("\t\tControl$+\Phi$SDM")
-    cs_miss_count = [sum([1 for j in range(len(experiments["Control$+\Phi$SDM"][1:])) if experiments["Control$+\Phi$SDM"][j][i] != experiments["Control$+\Phi$SDM"][j][i]])
+    cs_miss_count = [sum([1 for j in range(1,len(experiments["Control$+\Phi$SDM"])) if experiments["Control$+\Phi$SDM"][j][i] != experiments["Control$+\Phi$SDM"][j][i]])
                        for i in range(11)]
     print("\t\tControl")
-    c_miss_count = [sum([1 for j in range(len(experiments["Control"][1:])) if experiments["Control"][j][i] != experiments["Control"][j][i]])
+    c_miss_count = [sum([1 for j in range(1,len(experiments["Control"])) if experiments["Control"][j][i] != experiments["Control"][j][i]])
                        for i in range(11)]
     print("\t\tBOOST$+\Phi$SDM")
-    bs_miss_count = [sum([1 for j in range(len(experiments["BOOST$+\Phi$SDM"][1:])) if experiments["BOOST$+\Phi$SDM"][j][i] != experiments["BOOST$+\Phi$SDM"][j][i]])
+    bs_miss_count = [sum([1 for j in range(1,len(experiments["BOOST$+\Phi$SDM"])) if experiments["BOOST$+\Phi$SDM"][j][i] != experiments["BOOST$+\Phi$SDM"][j][i]])
                        for i in range(11)]
     print("\t\tBOOST")
-    b_miss_count = [sum([1 for j in range(len(experiments["BOOST"][1:])) if experiments["BOOST"][j][i] != experiments["BOOST"][j][i]])
+    b_miss_count = [sum([1 for j in range(1,len(experiments["BOOST"])) if experiments["BOOST"][j][i] != experiments["BOOST"][j][i]])
                        for i in range(11)]
 
     miss_counts = [[cs_miss_count, c_miss_count],[bs_miss_count, b_miss_count]]
@@ -1135,7 +1151,6 @@ def main():
                        for i in range(11)]
     b_meds = [sh.median(channel) for channel in b_report_signal]
     b_report_signal = [[log10(data) for data in channel] for channel in b_report_signal]
-    
     meds_list = [cs_meds, c_meds, bs_meds, b_meds]
     sigsnals = [cs_report_signal, c_report_signal, bs_report_signal, b_report_signal]
     
@@ -1542,6 +1557,125 @@ def main():
     print("")
     ####################################################################################################
     print("STAGE 3: Making the plots")
+    print("\tGenerating Figure 2E: Ratios")
+    ratio_labs = ["1.0 mg : 0.1 mg",
+                  "1.0 mg : 0.3 mg",
+                  "0.3 mg : 0.1 mg",
+                  ""]
+    labels = [r"Control$+\Phi$SDM", "Control", "BOOST$+\Phi$SDM", "BOOST"]
+    xpos = []
+    i=1
+    for _ in range(4):
+        xpos.append(i)
+        i+= 0.3
+    figg, axx = plt.subplots(2,4,figsize=(12,6),
+                             sharex = True,
+                             gridspec_kw = {"hspace" : 0.01,
+                                              "wspace" :0.01})
+    axx[0][3].spines["top"].set_visible(False)
+    axx[0][3].spines["right"].set_visible(False)
+    axx[0][3].spines["left"].set_visible(False)
+    axx[0][3].spines["bottom"].set_visible(False)
+    axx[0][3].set_xticks([])
+    axx[0][3].set_yticks([])
+    axx[0][3].set_xticklabels([])
+    axx[0][3].set_yticklabels([])
+    axx[1][3].spines["top"].set_visible(False)
+    axx[1][3].spines["right"].set_visible(False)
+    axx[1][3].spines["left"].set_visible(False)
+    axx[1][3].spines["bottom"].set_visible(False)
+    axx[1][3].set_xticks([])
+    axx[1][3].set_yticks([])
+    axx[1][3].set_xticklabels([])
+    axx[1][3].set_yticklabels([])
+    for h in range(2):
+        for i in range(len(ratios)):
+            axx[h][i].set_ylim(-1,4)
+            if i == 0:
+                axx[h][i].text(2.18, log10(10)+0.05, f"{10**log10(10):.1f}", alpha = 0.5,
+                               ha = "right", va = "bottom",
+                       fontfamily = "sans-serif", font = "Arial",
+                                         fontweight = "bold", fontsize = 10, color = "red")
+                axx[h][i].plot([0.5,2.5], [log10(10), log10(10)], linestyle = ":", color = "red")
+                axx[h][i].spines["top"].set_visible(False)
+                axx[h][i].spines["right"].set_visible(False)
+                axx[h][i].set_yticks([0,1,2,3])
+                axx[h][i].set_yticklabels(["0", "10","100","1000"],fontfamily = "sans-serif", font = "Arial",
+                                         fontweight = "bold", fontsize = 12 )
+            elif i == 1:
+                axx[h][i].text(2.18, log10(3+1/3)+0.05, f"{10**log10(3+1/3):.1f}", alpha = 0.5,
+                               ha = "right", va = "bottom",
+                               fontfamily = "sans-serif", font = "Arial",
+                               fontweight = "bold", fontsize = 10, color = "red")
+                axx[h][i].plot([0.5,2.5], [log10(3 + 1/3), log10(3 + 1/3)], linestyle = ":", color = "red")
+                axx[h][i].set_yticks([])
+                axx[h][i].set_yticklabels([])
+                axx[h][i].spines["top"].set_visible(False)
+                axx[h][i].spines["right"].set_visible(False)
+                axx[h][i].spines["left"].set_visible(False)
+            elif i == 2:
+                axx[h][i].plot([0.5,2.5], [log10(3), log10(3)], linestyle = ":", color = "red")
+                axx[h][i].set_yticks([])
+                axx[h][i].set_yticklabels([])
+                axx[h][i].spines["top"].set_visible(False)
+                axx[h][i].spines["right"].set_visible(False)
+                axx[h][i].spines["left"].set_visible(False)
+                axx[h][i].text(2.18, log10(3)+0.05, f"{10**log10(3):.1f}", alpha = 0.5,
+                               ha = "right", va = "bottom",
+                       fontfamily = "sans-serif", font = "Arial",
+                                         fontweight = "bold", fontsize = 10, color = "red")
+            violin_parts = axx[h][i].violinplot(loggedmean[h][i], showmedians = True,
+                        positions = xpos, widths = 0.2, points = 1000,
+                                 showextrema = False)
+            axx[h][i].set_xlim(0.7,2.2)
+            for j in range(4):
+                axx[h][i].text(xpos[j], 3.5, f"{ratiomeds[h][i][j]:.2f}",
+                                va = "bottom", fontfamily = "sans-serif",
+                                   font = "Arial", fontweight = "bold", ha = "center", 
+                                fontsize = 10)
+                violin_parts["bodies"][j].set_facecolor(colours[j])
+                violin_parts["bodies"][j].set_edgecolor("black")
+            violin_parts["cmedians"].set_color("black")
+    #        print([10**item[0][1] for item in violin_parts["cmedians"].get_segments()])
+            #violin_parts["cmaxes"].set_color("black")
+            #violin_parts["cmins"].set_color("black")
+            #violin_parts["cbars"].set_color("black")
+        #    violin_parts["cmedians"].set_alpha(0.25)
+            #violin_parts["cmaxes"].set_alpha(0.25)
+            #violin_parts["cmins"].set_alpha(0.25)
+            #violin_parts["cbars"].set_alpha(0.25)
+            if h == 1:
+                axx[h][i].set_xlabel(ratio_labs[i], fontfamily = "sans-serif",
+                                   font = "Arial", fontweight = "bold",
+                                fontsize = 14)  
+            else:
+                axx[h][i].spines["bottom"].set_visible(False)
+            axx[h][i].set_xticks([])
+            axx[h][i].set_xticklabels([])
+    patches = [Patch(color = colours[i], label = labels[i],
+                     alpha = 0.5) for i in range(len(labels))]
+    axx[1][3].legend(handles=patches, bbox_to_anchor = (1,0.5),
+                      prop = {"family" : "Arial",
+                              "weight" : "bold",
+                              "size" : 12})
+    axx[0][3].set_ylim(-1,4)
+    axx[0][3].text(0.75, 3.5, "Median Ratio", ha = "left", va = "bottom",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 10)
+    axx[0][3].text(0.75, 0.5, "Expected Ratio", ha = "left", va = "bottom",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 10, color = "red", alpha = 0.5)
+    figg.text(0.04, 0.5, 'Ratio of Mean Abundances', va='center', rotation='vertical',
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 16)
+    axx[1][0].set_ylabel("All Possible Ratios",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 12)
+    axx[0][0].set_ylabel("No Missing Values",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 12)
+    plt.savefig("figures/ratio_suppression.pdf")
+    plt.show()
     print("\tGenerating Supporting Figure 1: Localisation Probability Histogram\n")
     fig14, ax14 = plt.subplots(figsize = (12,12))
     for key, value in sty_split:
@@ -1725,7 +1859,6 @@ def main():
     ax1[3].spines["bottom"].set_visible(False)
     ax1[3].set_xticks([])
     ax1[3].set_yticks([])
-    labels = [r"Control$+\Phi$SDM", "Control", "BOOST$+\Phi$SDM", "BOOST"]
     patches = [Patch(color = colours[i], label = labels[i]) for i in range(len(labels))]
     ax1[3].legend(handles=patches, loc = "center left", prop = {"family" : "Arial",
                                                              "weight" : "bold",
@@ -2677,6 +2810,199 @@ def main():
               va='center', fontfamily = "sans-serif",
               font = "Arial", fontweight = "bold", fontsize = 20)
     plt.savefig("figures/boostfactor_hists.pdf")
+    plt.show()
+    print("\tGenerating Supporting Figures 4-6: Replicate Intensities vs the Means\n")
+    group_labs = ["Control$+\Phi$SDM",
+                  "Control",
+                  "BOOST$+\Phi$SDM",
+                  "BOOST"]
+
+    cs_report_signal = [[experiments["Control$+\Phi$SDM"][j][i] for j in range(1,len(experiments["Control$+\Phi$SDM"]))]
+                        for i in range(11)]  # For columns 0-10, which are the reporter channels
+    # Output is a list of 11 lists, each with the data from one channel
+
+    c_report_signal = [[experiments["Control"][j][i] for j in range(1,len(experiments["Control"]))]
+                       for i in range(11)]
+
+    bs_report_signal = [[experiments["BOOST$+\Phi$SDM"][j][i] for j in range(1,len(experiments["BOOST$+\Phi$SDM"]))]
+                       for i in range(11)]
+
+    b_report_signal = [[experiments["BOOST"][j][i] for j in range(1,len(experiments["BOOST"]))]
+                       for i in range(11)]
+
+    cs_report_signal = gh.transpose(*cs_report_signal)
+    c_report_signal = gh.transpose(*c_report_signal)
+    bs_report_signal = gh.transpose(*bs_report_signal)
+    b_report_signal = gh.transpose(*b_report_signal)
+
+    # grab reps and what not, no filtering by number of values
+    cs_report_1_123 = [[log10(item[x]) for x in ten_x] for item in cs_report_signal if all([item[x] == item[x] for x in ten_x])]
+    cs_report_1_mean = [sh.mean(item) for item in cs_report_1_123]
+    c_report_1_123 = [[log10(item[x]) for x in ten_x] for item in c_report_signal if all([item[x] == item[x] for x in ten_x])]
+    c_report_1_mean = [sh.mean(item) for item in c_report_1_123]
+    bs_report_1_123 = [[log10(item[x]) for x in ten_x] for item in bs_report_signal if all([item[x] == item[x] for x in ten_x])]
+    bs_report_1_mean = [sh.mean(item) for item in bs_report_1_123]
+    b_report_1_123 = [[log10(item[x]) for x in ten_x] for item in b_report_signal if all([item[x] == item[x] for x in ten_x])]
+    b_report_1_mean = [sh.mean(item) for item in b_report_1_123]
+
+    ten_report_matrix = [[[row[i] for i in range(3)] for row in cs_report_1_123],
+                         [[row[i] for i in range(3)] for row in c_report_1_123],
+                         [[row[i] for i in range(3)] for row in bs_report_1_123],
+                         [[row[i] for i in range(3)] for row in b_report_1_123]]
+    ten_mean_lists = [cs_report_1_mean, c_report_1_mean, bs_report_1_mean,b_report_1_mean]
+
+    cs_report_03_123 = [[log10(item[x]) for x in three_x] for item in cs_report_signal if all([item[x] == item[x] for x in three_x])]
+    cs_report_03_mean = [sh.mean(item) for item in cs_report_03_123]
+    c_report_03_123 = [[log10(item[x]) for x in three_x] for item in c_report_signal if all([item[x] == item[x] for x in three_x])]
+    c_report_03_mean = [sh.mean(item) for item in c_report_03_123]
+    bs_report_03_123 = [[log10(item[x]) for x in three_x] for item in bs_report_signal if all([item[x] == item[x] for x in three_x])]
+    bs_report_03_mean = [sh.mean(item) for item in bs_report_03_123]
+    b_report_03_123 = [[log10(item[x]) for x in three_x] for item in b_report_signal if all([item[x] == item[x] for x in three_x])]
+    b_report_03_mean = [sh.mean(item) for item in b_report_03_123]
+
+    three_report_matrix = [[[row[i] for i in range(3)] for row in cs_report_03_123],
+                         [[row[i] for i in range(3)] for row in c_report_03_123],
+                         [[row[i] for i in range(3)] for row in bs_report_03_123],
+                         [[row[i] for i in range(3)] for row in b_report_03_123]]
+    three_mean_lists = [cs_report_03_mean, c_report_03_mean, bs_report_03_mean,b_report_03_mean]
+
+
+    cs_report_01_123 = [[log10(item[x]) for x in one_x] for item in cs_report_signal if all([item[x] == item[x] for x in one_x])]
+    cs_report_01_mean = [sh.mean(item) for item in cs_report_01_123]
+    c_report_01_123 = [[log10(item[x]) for x in one_x] for item in c_report_signal if all([item[x] == item[x] for x in one_x])]
+    c_report_01_mean = [sh.mean(item) for item in c_report_01_123]
+    bs_report_01_123 = [[log10(item[x]) for x in one_x] for item in bs_report_signal if all([item[x] == item[x] for x in one_x])]
+    bs_report_01_mean = [sh.mean(item) for item in bs_report_01_123]
+    b_report_01_123 = [[log10(item[x]) for x in one_x] for item in b_report_signal if all([item[x] == item[x] for x in one_x])]
+    b_report_01_mean = [sh.mean(item) for item in b_report_01_123]
+
+    one_report_matrix = [[[row[i] for i in range(3)] for row in cs_report_01_123],
+                         [[row[i] for i in range(3)] for row in c_report_01_123],
+                         [[row[i] for i in range(3)] for row in bs_report_01_123],
+                         [[row[i] for i in range(3)] for row in b_report_01_123]]
+    one_mean_lists = [cs_report_01_mean, c_report_01_mean,
+                      bs_report_01_mean,b_report_01_mean]
+
+    art_labels = ["$\log_{10}($R1$)$","$\log_{10}($R2$)$","$\log_{10}($R3$)$"]
+
+    figgg, axxx = plt.subplots(4,3,figsize = (15,15))
+
+    for i in range(4):
+        for j in range(3):
+            scatter_gausskde(ten_mean_lists[i],
+                             [row[j] for row in ten_report_matrix[i]], axxx[i][j], colour = colours[i],
+                             scatterargs = {"s" : 20,
+                                                   "alpha" : 0.25,
+                                                   "marker" : "o",
+                                             "edgecolor" : "black"},
+                             xlim = [0,8],
+                             ylim = [0,8])
+            axxx[i][j].legend(loc="upper left")
+            axxx[i][j].set_xlabel("$\log_{10}($Geometric Mean$)$", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            axxx[i][j].set_ylabel(art_labels[j], fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            above = sum([1 for k in range(len(ten_mean_lists[i])) if [row[j] for row in ten_report_matrix[i]][k] > ten_mean_lists[i][k] and [row[j] for row in ten_report_matrix[i]][k] == [row[j] for row in ten_report_matrix[i]][k]])
+            below = len([row[j] for row in ten_report_matrix[i] if row[j] == row[j]]) - above
+            axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            if j==2:
+                axxx2= axxx[i][j].twinx()
+                axxx2.set_ylabel(group_labs[i], rotation = 270, fontfamily = "sans-serif",
+                                 font = "Arial", fontweight = "bold", fontsize = 18,
+                                 bbox=dict(facecolor='none', edgecolor='black'), labelpad = 6,
+                                va = "bottom")
+                axxx2.set_yticks([])
+                axxx2.set_yticklabels([])
+            #axxx[i][j].scatter(ten_mean_lists[i], [row[j] for row in ten_report_matrix[i]],
+            #                   color = colours[i], s=20, edgecolor = "black")
+            
+    figgg.suptitle("\n\n\nReplicates vs the Mean for 1.0 mg Protein Input",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 18)
+    plt.savefig("figures/reps_vs_mean_1mg.pdf")
+    plt.show()
+
+    figgg, axxx = plt.subplots(4,3,figsize = (15,15))
+
+    for i in range(4):
+        for j in range(3):
+            scatter_gausskde(three_mean_lists[i],
+                             [row[j] for row in three_report_matrix[i]], axxx[i][j], colour = colours[i],
+                             scatterargs = {"s" : 20,
+                                                   "alpha" : 0.25,
+                                                   "marker" : "o",
+                                             "edgecolor" : "black"},
+                             xlim = [0,8],
+                             ylim = [0,8])
+            axxx[i][j].legend(loc="upper left")
+            axxx[i][j].set_xlabel("$\log_{10}($Geometric Mean$)$", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            axxx[i][j].set_ylabel(art_labels[j], fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            above = sum([1 for k in range(len(three_mean_lists[i])) if [row[j] for row in three_report_matrix[i]][k] > three_mean_lists[i][k] and [row[j] for row in three_report_matrix[i]][k] == [row[j] for row in three_report_matrix[i]][k]])
+            below = len([row[j] for row in three_report_matrix[i] if row[j] == row[j]]) - above
+            axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            if j==2:
+                axxx2= axxx[i][j].twinx()
+                axxx2.set_ylabel(group_labs[i], rotation = 270, fontfamily = "sans-serif",
+                                 font = "Arial", fontweight = "bold", fontsize = 18,
+                                 bbox=dict(facecolor='none', edgecolor='black'), labelpad = 6,
+                                va = "bottom")
+                axxx2.set_yticks([])
+                axxx2.set_yticklabels([])
+            #axxx[i][j].scatter(ten_mean_lists[i], [row[j] for row in ten_report_matrix[i]],
+            #                   color = colours[i], s=20, edgecolor = "black")
+            
+    figgg.suptitle("\n\n\nReplicates vs the Mean for 0.3 mg Protein Input",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 18)
+    plt.savefig("figures/reps_vs_mean_03mg.pdf")
+    plt.show()
+
+    figgg, axxx = plt.subplots(4,3,figsize = (15,15))
+
+    for i in range(4):
+        for j in range(3):
+            scatter_gausskde(one_mean_lists[i],
+                             [row[j] for row in one_report_matrix[i]], axxx[i][j], colour = colours[i],
+                             scatterargs = {"s" : 20,
+                                                   "alpha" : 0.25,
+                                                   "marker" : "o",
+                                             "edgecolor" : "black"},
+                             xlim = [0,8],
+                             ylim = [0,8])
+            axxx[i][j].legend(loc="upper left")
+            axxx[i][j].set_xlabel("$\log_{10}($Geometric Mean$)$", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            axxx[i][j].set_ylabel(art_labels[j], fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            above = sum([1 for k in range(len(one_mean_lists[i])) if [row[j] for row in one_report_matrix[i]][k] > one_mean_lists[i][k] and [row[j] for row in one_report_matrix[i]][k] == [row[j] for row in one_report_matrix[i]][k]])
+            below = len([row[j] for row in one_report_matrix[i] if row[j] == row[j]]) - above
+            axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
+                                 font = "Arial", fontsize = 10)
+            axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
+                                  font = "Arial", fontsize = 10)
+            if j==2:
+                axxx2= axxx[i][j].twinx()
+                axxx2.set_ylabel(group_labs[i], rotation = 270, fontfamily = "sans-serif",
+                                 font = "Arial", fontweight = "bold", fontsize = 18,
+                                 bbox=dict(facecolor='none', edgecolor='black'), labelpad = 6,
+                                va = "bottom")
+                axxx2.set_yticks([])
+                axxx2.set_yticklabels([])
+            #axxx[i][j].scatter(ten_mean_lists[i], [row[j] for row in ten_report_matrix[i]],
+            #                   color = colours[i], s=20, edgecolor = "black")
+            
+    figgg.suptitle("\n\n\nReplicates vs the Mean for 0.1 mg Protein Input",
+                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+                   fontsize = 18)
+    plt.savefig("figures/reps_vs_mean_01mg.pdf")
     plt.show()
     print("Complete! Check the './figures' and './curated_results' folders for the output!\n")
     
