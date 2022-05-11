@@ -4,7 +4,7 @@ This GitHub repository holds the Supporting Information for the manuscript Mouse
 
 
 
-![alt text](Supporting Folder 2 Data Analysis/paper_figures/graphical_toc/mouse-1.jpg)
+![figure](https://github.com/kendeegz/2022_chua_callahan_BOOST_code/blob/master/Supporting%20Folder%202%20Data%20Analysis/paper_figures/graphical_toc/mouse-1.jpg)
 
 
 
