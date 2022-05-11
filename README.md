@@ -4,7 +4,7 @@ This GitHub repository holds the Supporting Information for the manuscript Mouse
 
 
 
-![alt text](/Supporting Folder 2 Data Analysis/paper_figures/graphical_toc/mouse-1.jpg?raw=True)
+![alt text](Supporting Folder 2 Data Analysis/paper_figures/graphical_toc/mouse-1.jpg)
 
 
 
