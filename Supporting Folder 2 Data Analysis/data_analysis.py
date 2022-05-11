@@ -1629,10 +1629,10 @@ def main():
                                  showextrema = False)
             axx[h][i].set_xlim(0.7,2.2)
             for j in range(4):
-                axx[h][i].text(xpos[j], 3.5, f"{ratiomeds[h][i][j]:.2f}",
-                                va = "bottom", fontfamily = "sans-serif",
-                                   font = "Arial", fontweight = "bold", ha = "center", 
-                                fontsize = 10)
+                #axx[h][i].text(xpos[j], 3.5, f"{ratiomeds[h][i][j]:.2f}",
+                #                va = "bottom", fontfamily = "sans-serif",
+                #                   font = "Arial", fontweight = "bold", ha = "center", 
+                #                fontsize = 10)
                 violin_parts["bodies"][j].set_facecolor(colours[j])
                 violin_parts["bodies"][j].set_edgecolor("black")
             violin_parts["cmedians"].set_color("black")
@@ -1659,9 +1659,9 @@ def main():
                               "weight" : "bold",
                               "size" : 12})
     axx[0][3].set_ylim(-1,4)
-    axx[0][3].text(0.75, 3.5, "Median Ratio", ha = "left", va = "bottom",
-                   fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
-                   fontsize = 10)
+    #axx[0][3].text(0.75, 3.5, "Median Ratio", ha = "left", va = "bottom",
+    #               fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
+    #               fontsize = 10)
     axx[0][3].text(0.75, 0.5, "Expected Ratio", ha = "left", va = "bottom",
                    fontfamily = "sans-serif", font = "Arial", fontweight = "bold",
                    fontsize = 10, color = "red", alpha = 0.5)
@@ -2904,10 +2904,10 @@ def main():
                                   font = "Arial", fontsize = 10)
             above = sum([1 for k in range(len(ten_mean_lists[i])) if [row[j] for row in ten_report_matrix[i]][k] > ten_mean_lists[i][k] and [row[j] for row in ten_report_matrix[i]][k] == [row[j] for row in ten_report_matrix[i]][k]])
             below = len([row[j] for row in ten_report_matrix[i] if row[j] == row[j]]) - above
-            axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
-                                  font = "Arial", fontsize = 10)
-            axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
-                                  font = "Arial", fontsize = 10)
+            #axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
+            #                      font = "Arial", fontsize = 10)
+            #axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
+            #                      font = "Arial", fontsize = 10)
             if j==2:
                 axxx2= axxx[i][j].twinx()
                 axxx2.set_ylabel(group_labs[i], rotation = 270, fontfamily = "sans-serif",
@@ -2944,10 +2944,10 @@ def main():
                                   font = "Arial", fontsize = 10)
             above = sum([1 for k in range(len(three_mean_lists[i])) if [row[j] for row in three_report_matrix[i]][k] > three_mean_lists[i][k] and [row[j] for row in three_report_matrix[i]][k] == [row[j] for row in three_report_matrix[i]][k]])
             below = len([row[j] for row in three_report_matrix[i] if row[j] == row[j]]) - above
-            axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
-                                  font = "Arial", fontsize = 10)
-            axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
-                                  font = "Arial", fontsize = 10)
+            #axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
+            #                      font = "Arial", fontsize = 10)
+            #axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
+            #                      font = "Arial", fontsize = 10)
             if j==2:
                 axxx2= axxx[i][j].twinx()
                 axxx2.set_ylabel(group_labs[i], rotation = 270, fontfamily = "sans-serif",
@@ -2984,10 +2984,10 @@ def main():
                                   font = "Arial", fontsize = 10)
             above = sum([1 for k in range(len(one_mean_lists[i])) if [row[j] for row in one_report_matrix[i]][k] > one_mean_lists[i][k] and [row[j] for row in one_report_matrix[i]][k] == [row[j] for row in one_report_matrix[i]][k]])
             below = len([row[j] for row in one_report_matrix[i] if row[j] == row[j]]) - above
-            axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
-                                 font = "Arial", fontsize = 10)
-            axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
-                                  font = "Arial", fontsize = 10)
+            #axxx[i][j].text(3,1,f"Reporter $> \mu$: $n={above}$", ha = "left", fontfamily = "sans-serif",
+            #                     font = "Arial", fontsize = 10)
+            #axxx[i][j].text(3,.5,f"Reporter $< \mu$: $n={below}$", ha = "left", fontfamily = "sans-serif",
+            #                      font = "Arial", fontsize = 10)
             if j==2:
                 axxx2= axxx[i][j].twinx()
                 axxx2.set_ylabel(group_labs[i], rotation = 270, fontfamily = "sans-serif",
