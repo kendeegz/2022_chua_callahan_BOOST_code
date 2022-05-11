@@ -2,7 +2,7 @@
 
 This GitHub repository holds the Supporting Information for the manuscript Mouse primary T cell phosphotyrosine proteomics enabled by BOOST by Xien Yu Chua, Kenneth P. Callahan, Alijah A. Griffith, Tobias Hildebrandt, Guoping Fu, Mengzhou Hu, Renren Wen, and Arthur R. Salomon.
 
-![alt text](Supporting\ Folder\ 2\ Data\ Analysis/paper_figures/graphical_toc/mouse-1.jpg?raw=True "")
+![alt text](./Supporting\ Folder\ 2\ Data\ Analysis/paper_figures/graphical_toc/mouse-1.jpg)
 
 ## Supporting Folder 1: MaxQuant Results
 
